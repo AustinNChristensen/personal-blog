@@ -1,6 +1,10 @@
 import React from 'react'
 import {graphql} from 'gatsby'
-import {mapEdgesToNodes} from '../lib/helpers'
+import {
+  mapEdgesToNodes,
+  filterOutDocsPublishedInTheFuture,
+  filterOutDocsWithoutSlugs
+} from '../lib/helpers'
 import BlogPostPreviewGrid from '../components/blog-post-preview-grid'
 import Container from '../components/container'
 import GraphQLErrorList from '../components/graphql-error-list'
@@ -45,7 +49,7 @@ const ArchivePage = props => {
     )
   }
 
-  const postNodes = data && data.posts && mapEdgesToNodes(data.posts)
+  const postNodes = data && data.posts && mapEdgesToNodes(data.posts).filter(filterOutDocsWithoutSlugs).filter(filterOutDocsPublishedInTheFuture)
 
   return (
     <Layout>
