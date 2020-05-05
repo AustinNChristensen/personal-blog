@@ -4,6 +4,7 @@ import Helmet from 'react-helmet'
 import {StaticQuery, graphql} from 'gatsby'
 import {imageUrlFor} from '../lib/image-url'
 import {buildImageObj} from '../lib/helpers'
+import Favicon from '../components/images/favicon.png'
 
 function SEO ({description, lang, meta, keywords, title, image}) {
   return (
@@ -67,6 +68,9 @@ function SEO ({description, lang, meta, keywords, title, image}) {
                   : []
               )
               .concat(meta)}
+            link={[
+              {rel: 'icon', type: 'image/png', sizes: '16x16', href: `${Favicon}`}
+            ]}
           />
         )
       }}
