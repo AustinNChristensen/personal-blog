@@ -69,3 +69,8 @@
   line-height: var(--font-small-line-height);
   color: var(--color-gray);
 }
+
+
+.cardContainer {
+  border: 1px solid black;
+}

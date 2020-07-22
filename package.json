@@ -14,7 +14,13 @@
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "devDependencies": {
+    "@reactstarter/eslint-config": "^1.0.1",
     "@sanity/cli": "^1.149.9",
     "lerna": "^3.13.1"
+  },
+  "dependencies": {
+    "@material-ui/core": "^4.10.2",
+    "@material-ui/icons": "^4.9.1",
+    "react": "^16.13.1"
   }
 }

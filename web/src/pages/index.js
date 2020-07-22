@@ -1,15 +1,118 @@
-import React from 'react'
-import {graphql} from 'gatsby'
-import {
-  mapEdgesToNodes,
-  filterOutDocsWithoutSlugs,
-  filterOutDocsPublishedInTheFuture
-} from '../lib/helpers'
-import BlogPostPreviewList from '../components/blog-post-preview-list'
-import Container from '../components/container'
-import GraphQLErrorList from '../components/graphql-error-list'
-import SEO from '../components/seo'
-import Layout from '../containers/layout'
+import React, { useState } from 'react';
+import { graphql, Link } from 'gatsby';
+import { makeStyles, Snackbar } from '@material-ui/core';
+import { Alert } from '@material-ui/lab';
+import { filterOutDocsPublishedInTheFuture, filterOutDocsWithoutSlugs, mapEdgesToNodes } from '../lib/helpers';
+import Container from '../components/container';
+import GraphQLErrorList from '../components/graphql-error-list';
+import SEO from '../components/seo';
+import Layout from '../containers/layout';
+
+const useStyles = makeStyles(() => ({
+    sectionCard: {
+        display: 'flex',
+        flexDirection: 'column',
+        padding: '35px 30px',
+        justifyContent: 'spaceAround',
+        alignItems: 'center',
+        height: '100%'
+    },
+    sectionImage: {
+        margin: '10px 0'
+    },
+    sectionTitle: {
+        margin: '10px 0'
+    },
+    sectionDescription: {
+        margin: '10px 0'
+    }
+}));
+
+const IndexPage = (props) => {
+    // const classes = useStyles();
+    const { data, errors } = props;
+    const [isMessageOpen, setIsMessageOpen] = useState(true);
+
+    const handleClose = () => {
+        setIsMessageOpen(false);
+    };
+
+    if (errors) {
+        return (
+            <Layout>
+                <GraphQLErrorList errors={ errors } />
+            </Layout>
+        );
+    }
+
+    const site = (data || {}).site;
+    const postNodes = (data || {}).posts ?
+        mapEdgesToNodes(data.posts)
+            .filter(filterOutDocsWithoutSlugs)
+            .filter(filterOutDocsPublishedInTheFuture) :
+        [];
+
+    if (!site) {
+        throw new Error(
+            'Missing "Site settings". Open the studio at http://localhost:3333 and add some content to "Site settings" and restart the development server.'
+        );
+    }
+
+    return (
+        <Layout>
+            <SEO
+                title={ site.title }
+                description={ site.description }
+                keywords={ site.keywords }
+            />
+            <Container>
+                <Snackbar
+                    open={ isMessageOpen }
+                    autoHideDuration={ 5000 }
+                    onClose={ handleClose }
+                >
+                    <Alert
+                        onClose={ handleClose }
+                        severity='warning'
+                        elevation={ 6 }
+                        variant='filled'
+                    >
+                        This site is currently undergoing major changes, updates coming soon!
+                    </Alert>
+                </Snackbar>
+                {/* <GridList*/}
+                {/*    cols={ 3 }*/}
+                {/* >*/}
+                {/*    <GridListTile>*/}
+                {/*        <Card*/}
+                {/*            variant='elevation'*/}
+                {/*            className={classes.sectionCard}*/}
+                {/*        >*/}
+                {/*        </Card>*/}
+                {/*    </GridListTile>*/}
+                {/*    <GridListTile>*/}
+                {/*        <Card*/}
+                {/*            variant='elevation'*/}
+                {/*            className={classes.sectionCard}*/}
+                {/*        >*/}
+                {/*        </Card>*/}
+                {/*    </GridListTile>*/}
+                {/*    <GridListTile>*/}
+                {/*        <Card*/}
+                {/*            variant='elevation'*/}
+                {/*            className={classes.sectionCard}*/}
+                {/*        >*/}
+                {/*        </Card>*/}
+                {/*    </GridListTile>*/}
+                {/* </GridList>*/}
+                <p>This site is currently undergoing <strong>major</strong> renovations. Come back soon for more!</p>
+                <p>Until then, check out some of my blog posts <Link to='/posts'>here</Link></p>
+            </Container>
+        </Layout>
+    );
+};
+
+export default IndexPage;
 
 export const query = graphql`
   fragment SanityImage on SanityMainImage {
@@ -42,7 +145,7 @@ export const query = graphql`
       keywords
     }
     posts: allSanityPost(
-      limit: 6
+      limit: 10
       sort: { fields: [publishedAt], order: DESC }
       filter: { slug: { current: { ne: null } }, publishedAt: { ne: null } }
     ) {
@@ -63,52 +166,4 @@ export const query = graphql`
       }
     }
   }
-`
-
-const IndexPage = props => {
-  const {data, errors} = props
-
-  if (errors) {
-    return (
-      <Layout>
-        <GraphQLErrorList errors={errors} />
-      </Layout>
-    )
-  }
-
-  const site = (data || {}).site
-  const postNodes = (data || {}).posts
-    ? mapEdgesToNodes(data.posts)
-      .filter(filterOutDocsWithoutSlugs)
-      .filter(filterOutDocsPublishedInTheFuture)
-    : []
-
-  if (!site) {
-    throw new Error(
-      'Missing "Site settings". Open the studio at http://localhost:3333 and add some content to "Site settings" and restart the development server.'
-    )
-  }
-
-  return (
-    <Layout>
-      <SEO
-        title={site.title}
-        description={site.description}
-        keywords={site.keywords}
-      />
-      <Container>
-        <h1>{site.title}</h1>
-        <p>{site.subtitle}</p>
-        {postNodes && (
-          <BlogPostPreviewList
-            title='Latest blog posts'
-            nodes={postNodes}
-            browseMoreHref='/archive/'
-          />
-        )}
-      </Container>
-    </Layout>
-  )
-}
-
-export default IndexPage
+`;

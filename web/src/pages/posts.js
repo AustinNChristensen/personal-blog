@@ -37,7 +37,7 @@ export const query = graphql`
   }
 `;
 
-const ArchivePage = (props) => {
+const PostPage = (props) => {
     const { data, errors } = props;
 
     if (errors) {
@@ -61,4 +61,4 @@ const ArchivePage = (props) => {
     );
 };
 
-export default ArchivePage;
+export default PostPage;
