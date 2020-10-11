@@ -61,7 +61,7 @@ export const NavMenu = ({ isOpen, onClose, onOpen }) => {
                 <ListItem
                     button
                     component='a'
-                    href='portfolio'
+                    href='/portfolio'
                 >
                     <ListItemIcon>
                         <WorkIcon />
@@ -71,7 +71,7 @@ export const NavMenu = ({ isOpen, onClose, onOpen }) => {
                 <ListItem
                     button
                     component='a'
-                    href='about'
+                    href='/about'
                 >
                     <ListItemIcon>
                         <ContactIcon />
@@ -81,7 +81,7 @@ export const NavMenu = ({ isOpen, onClose, onOpen }) => {
                 <ListItem
                     button
                     component='a'
-                    href='contact'
+                    href='/contact'
                 >
                     <ListItemIcon>
                         <InfoIcon />
