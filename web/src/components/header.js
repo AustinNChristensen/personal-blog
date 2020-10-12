@@ -1,7 +1,6 @@
 import { Link } from 'gatsby';
 import React from 'react';
 import { AppBar, makeStyles, Toolbar, Typography } from '@material-ui/core';
-import { Emoji } from './Emoji/Emoji';
 
 const useStyles = makeStyles((theme) => ({
     title: {
@@ -26,7 +25,6 @@ const useStyles = makeStyles((theme) => ({
 
 const Header = () => {
     const classes = useStyles();
-    console.log(getName('👏🏼'));
 
     return (
         <AppBar position='static'>
@@ -68,10 +66,6 @@ const Header = () => {
                         to='/about'
                         className={classes.headerLink}
                     >
-                        <Emoji
-                            symbol='👏🏼'
-                            label='hands'
-                        />
                         <Typography variant='h6'>
                             about
                         </Typography>
