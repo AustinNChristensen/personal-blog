@@ -1,8 +1,15 @@
 import React from 'react';
 import styles from './container.module.css';
 
-const Container = ({ children }) => {
-    return <div className={styles.root}>{children}</div>;
+const Container = ({ children, ...rest }) => {
+    return (
+        <div
+            className={styles.root}
+            {...rest}
+        >
+            {children}
+        </div>
+    );
 };
 
 export default Container;

@@ -1,35 +1,14 @@
 import React, { useState } from 'react';
-import { graphql, Link } from 'gatsby';
-import { makeStyles, Snackbar } from '@material-ui/core';
+import { graphql } from 'gatsby';
+import { Snackbar } from '@material-ui/core';
 import { Alert } from '@material-ui/lab';
-import { filterOutDocsPublishedInTheFuture, filterOutDocsWithoutSlugs, mapEdgesToNodes } from '../lib/helpers';
 import Container from '../components/container';
 import GraphQLErrorList from '../components/graphql-error-list';
 import SEO from '../components/seo';
 import Layout from '../containers/layout';
-
-const useStyles = makeStyles(() => ({
-    sectionCard: {
-        display: 'flex',
-        flexDirection: 'column',
-        padding: '35px 30px',
-        justifyContent: 'spaceAround',
-        alignItems: 'center',
-        height: '100%'
-    },
-    sectionImage: {
-        margin: '10px 0'
-    },
-    sectionTitle: {
-        margin: '10px 0'
-    },
-    sectionDescription: {
-        margin: '10px 0'
-    }
-}));
+import { responsiveTitle1, responsiveTitle2 } from '../components/typography.module.css';
 
 const IndexPage = (props) => {
-    // const classes = useStyles();
     const { data, errors } = props;
     const [isMessageOpen, setIsMessageOpen] = useState(true);
 
@@ -46,11 +25,6 @@ const IndexPage = (props) => {
     }
 
     const site = (data || {}).site;
-    const postNodes = (data || {}).posts ?
-        mapEdgesToNodes(data.posts)
-            .filter(filterOutDocsWithoutSlugs)
-            .filter(filterOutDocsPublishedInTheFuture) :
-        [];
 
     if (!site) {
         throw new Error(
@@ -65,7 +39,13 @@ const IndexPage = (props) => {
                 description={ site.description }
                 keywords={ site.keywords }
             />
-            <Container>
+            <Container
+                style={{
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    height: '100%'
+                }}
+            >
                 <Snackbar
                     open={ isMessageOpen }
                     autoHideDuration={ 5000 }
@@ -80,33 +60,8 @@ const IndexPage = (props) => {
                         This site is currently undergoing major changes, updates coming soon!
                     </Alert>
                 </Snackbar>
-                {/* <GridList*/}
-                {/*    cols={ 3 }*/}
-                {/* >*/}
-                {/*    <GridListTile>*/}
-                {/*        <Card*/}
-                {/*            variant='elevation'*/}
-                {/*            className={classes.sectionCard}*/}
-                {/*        >*/}
-                {/*        </Card>*/}
-                {/*    </GridListTile>*/}
-                {/*    <GridListTile>*/}
-                {/*        <Card*/}
-                {/*            variant='elevation'*/}
-                {/*            className={classes.sectionCard}*/}
-                {/*        >*/}
-                {/*        </Card>*/}
-                {/*    </GridListTile>*/}
-                {/*    <GridListTile>*/}
-                {/*        <Card*/}
-                {/*            variant='elevation'*/}
-                {/*            className={classes.sectionCard}*/}
-                {/*        >*/}
-                {/*        </Card>*/}
-                {/*    </GridListTile>*/}
-                {/* </GridList>*/}
-                <p>This site is currently undergoing <strong>major</strong> renovations. Come back soon for more!</p>
-                <p>Until then, check out some of my blog posts <Link to='/posts'>here</Link></p>
+                <h1 className={responsiveTitle1}>Hello, I'm Austin Christensen.</h1>
+                <p className={responsiveTitle2}>I build awesome software in Chicago, IL.</p>
             </Container>
         </Layout>
     );
